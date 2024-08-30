@@ -1,7 +1,8 @@
 <div align="center">
 	<img src="image/OIG1.svg" alt="Logo" width="400" height="400">
 </div>
-# Instagram Video Downloader
+
+## Instagram Video Downloader
 
 Ce script Python vous permet de télécharger des vidéos depuis Instagram en meilleure qualité possible. Il utilise `Instaloader` pour gérer le téléchargement et prend également en charge l'authentification pour les comptes privés. Le script stocke en toute sécurité vos informations d'identification Instagram après la première connexion réussie pour une utilisation future.
 
