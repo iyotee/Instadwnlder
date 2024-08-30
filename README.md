@@ -40,7 +40,8 @@ Ce script Python vous permet de télécharger des vidéos depuis Instagram en me
 2. Après une connexion réussie, vous serez invité à entrer l'URL de la vidéo Instagram que vous souhaitez télécharger.
 
 3. La vidéo sera téléchargée dans le répertoire nommé d'après l'utilisateur Instagram qui a publié la vidéo.  
-\**Exemple** :
+
+**Exemple** :
    ```bash
    Entrez votre nom utilisateur Instagram: votre_nom_utilisateur
    Entrez votre mot de passe Instagram: ********
