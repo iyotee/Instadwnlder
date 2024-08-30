@@ -26,7 +26,11 @@ Ce script Python vous permet de télécharger des vidéos depuis Instagram en me
    ```bash
     python3 -m venv venv
     source venv/bin/activate
-3. **Exécutez le script. Il vérifiera automatiquement les dépendances manquantes et les installera** : 
+3. ** Installer les dépendances** :
+   ```bash
+   pip install instaloader cryptography
+
+4. **Exécutez le script. Il vérifiera automatiquement les dépendances manquantes et les installera** : 
 
    ```bash
    python3 main.py
