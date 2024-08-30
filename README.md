@@ -1,4 +1,4 @@
-<div align="center>
+<div align="center">
 	<img src="image/OIG1.svg" alt="Logo" width="400" height="400">
 </div>
 # Instagram Video Downloader
