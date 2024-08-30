@@ -21,21 +21,21 @@ Ce script Python vous permet de télécharger des vidéos depuis Instagram en me
    ```bash
    git clone https://github.com/iyotee/Instadwnlder.git
    cd Instadwnlder   
-2. **Configurez un environnement virtuel (optionnel mais recommandé) ** : 
+2. **Configurez un environnement virtuel (optionnel mais recommandé)** : 
 
    ```bash
     python3 -m venv venv
     source venv/bin/activate
-3. **Exécutez le script. Il vérifiera automatiquement les dépendances manquantes et les installera ** : 
+3. **Exécutez le script. Il vérifiera automatiquement les dépendances manquantes et les installera** : 
 
    ```bash
    python3 main.py
 ##  Utilisation
-1. **Lorsque vous exécutez le script pour la première fois, il vous demandera de saisir votre nom d'utilisateur et mot de passe Instagram. Ces informations seront vérifiées avant d'être stockées de manière sécurisée.**
+1. Lorsque vous exécutez le script pour la première fois, il vous demandera de saisir votre nom d'utilisateur et mot de passe Instagram. Ces informations seront vérifiées avant d'être stockées de manière sécurisée.
 
-2. **Après une connexion réussie, vous serez invité à entrer l'URL de la vidéo Instagram que vous souhaitez télécharger.**
+2. Après une connexion réussie, vous serez invité à entrer l'URL de la vidéo Instagram que vous souhaitez télécharger.
 
-3. **La vidéo sera téléchargée dans le répertoire nommé d'après l'utilisateur Instagram qui a publié la vidéo.**
+3. La vidéo sera téléchargée dans le répertoire nommé d'après l'utilisateur Instagram qui a publié la vidéo.
 ###Exemple
    ```bash
    Entrez votre nom utilisateur Instagram: votre_nom_utilisateur
