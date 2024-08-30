@@ -21,8 +21,7 @@ Ce script Python vous permet de télécharger des vidéos depuis Instagram en me
    ```bash
    git clone https://github.com/iyotee/Instadwnlder.git
    cd Instadwnlder
-   python3 -m venv venv
-   source venv/bin/activate
+
    
 2. **Configurez un environnement virtuel (optionnel mais recommandé) : **
 
