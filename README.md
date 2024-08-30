@@ -57,4 +57,4 @@ Dépendances non installées : Assurez-vous que pip est installé et correctemen
 N'hésitez pas à forker ce dépôt, créer des problèmes, ou soumettre des pull requests. Les contributions sont les bienvenues !
 
 ## Licence
-Ce projet est sous la licence MIT - Iyotee august 2024
+Ce projet est sous la licence MIT - Iyotee August 2024
