@@ -4,7 +4,7 @@ Ce script Python vous permet de télécharger des vidéos depuis Instagram en me
 
 ## Fonctionnalités
 
-- **Téléchargement de vidéos Instagram** : Il vous suffit de fournir le lien de la vidéo Instagram et le script la téléchargera.
+- **Téléchargement de vidéos Instagram** : Il vous suffit de fournir le lien de la vidéo Instagram ou du profil instagram et le script téléchargera toute les vidéo du profil ou la vidéo de l'URL fournie.
 - **Prend en charge les comptes privés** : Authentifiez-vous avec vos informations d'identification Instagram pour télécharger des vidéos depuis des comptes privés.
 - **Stockage sécurisé des informations d'identification** : Les informations d'identification sont chiffrées et stockées localement après la première connexion réussie.
 - **Installation automatique des dépendances** : Le script vérifie et installe automatiquement les packages Python manquants.
