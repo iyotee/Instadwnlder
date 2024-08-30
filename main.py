@@ -20,7 +20,12 @@ def install_missing_packages():
     if missing:
         print(f"Installation des packages manquants : {', '.join(missing)}")
         python = sys.executable
-        subprocess.check_call([python, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+        try:
+            subprocess.check_call([python, '-m', 'pip', 'install', *missing])
+            print("Paquets installés avec succès.")
+        except subprocess.CalledProcessError as e:
+            print(f"Erreur lors de l'installation des paquets : {e}")
+            sys.exit(1)
 
 # Appel de la fonction pour installer les dépendances manquantes
 install_missing_packages()
@@ -111,25 +116,6 @@ def verify_credentials(loader, username, password):
         print("Authentification à deux facteurs requise. Ce script ne gère pas encore cette fonctionnalité.")
         return False
 
-def extract_title_from_text_file(text_file_path):
-    """
-    Extrait le titre du fichier texte associé à la vidéo et le nettoie des hashtags.
-    """
-    try:
-        with open(text_file_path, 'r', encoding='utf-8') as file:
-            content = file.read()
-        
-        # Supprimer les hashtags et nettoyer le titre
-        title = re.sub(r'#\w+', '', content).strip()
-        
-        # Nettoyer le titre pour les caractères invalides dans les noms de fichiers
-        title = re.sub(r'[<>:"/\\|?*]', "", title)
-        
-        return title if title else "video"
-    except Exception as e:
-        print(f"Erreur lors de l'extraction du titre depuis {text_file_path}: {e}")
-        return "video"
-
 def download_instagram_video(video_url, username, password):
     """
     Télécharge une vidéo Instagram en fonction de l'URL fournie.
@@ -147,40 +133,40 @@ def download_instagram_video(video_url, username, password):
         try:
             post = instaloader.Post.from_shortcode(loader.context, shortcode)
             if post.is_video:
-                target_folder = f"{post.owner_username}_videos"
-                loader.download_post(post, target=target_folder)
+                # Téléchargement de la vidéo
+                loader.download_post(post, target=post.owner_username)
+                print(f"Vidéo téléchargée : {shortcode}")
 
-                # Assurer que le fichier JSON est téléchargé
-                json_file_path = os.path.join(target_folder, f"{post.shortcode}.json")
-                if not os.path.exists(json_file_path):
-                    print(f"Fichier JSON {json_file_path} non trouvé. Assurez-vous que le téléchargement est complet.")
-                    return
+                # Renommer la vidéo après le téléchargement
+                video_filename = f"{post.owner_username}_{shortcode}.mp4"
+                video_filepath = os.path.join(post.owner_username, f"{shortcode}.mp4")
+                if os.path.exists(video_filepath):
+                    # Renommer le fichier vidéo
+                    os.rename(video_filepath, video_filename)
+                    print(f"Vidéo renommée en : {video_filename}")
+                else:
+                    print("Le fichier vidéo n'a pas été trouvé pour le renommage.")
 
-                # Renommer le fichier téléchargé
-                downloaded_files = os.listdir(target_folder)
-                for filename in downloaded_files:
-                    if filename.startswith(post.shortcode) and filename.endswith('.mp4'):
-                        old_file_path = os.path.join(target_folder, filename)
-                        
-                        # Chercher le fichier texte associé
-                        text_file_path = old_file_path.replace('.mp4', '.txt')
-                        if os.path.exists(text_file_path):
-                            video_title = extract_title_from_text_file(text_file_path)
-                        else:
-                            video_title = "video"
-                        
-                        new_filename = f"{video_title}.mp4"
-                        new_file_path = os.path.join(target_folder, new_filename)
-                        try:
-                            os.rename(old_file_path, new_file_path)
-                            print(f"Vidéo téléchargée et renommée : {new_filename}")
-                        except Exception as e:
-                            print(f"Erreur lors du renommage de {old_file_path} en {new_file_path}: {e}")
+                # Renommer le fichier de métadonnées
+                metadata_filename = f"{post.owner_username}_{shortcode}.txt"
+                metadata_filepath = os.path.join(post.owner_username, f"{shortcode}.txt")
+                if os.path.exists(metadata_filepath):
+                    # Lire le titre depuis le fichier de métadonnées
+                    with open(metadata_filepath, 'r', encoding='utf-8') as metadata_file:
+                        title = metadata_file.read().strip()
+                    # Enlever les tags et utiliser le titre comme nom de fichier
+                    title = re.sub(r'#\S+', '', title).strip()
+                    new_video_filename = f"{title}.mp4"
+                    os.rename(video_filename, new_video_filename)
+                    print(f"Vidéo renommée en : {new_video_filename}")
+                else:
+                    print("Le fichier de métadonnées n'a pas été trouvé pour le renommage.")
+
             else:
                 print("L'URL fournie n'est pas une vidéo.")
         except instaloader.exceptions.InstaloaderException as e:
             print(f"Erreur lors du téléchargement : {e}")
-    
+
     elif 'instagram.com/' in video_url:
         # Télécharger toutes les vidéos du profil
         profile_name = video_url.split('/')[-2]
@@ -189,35 +175,28 @@ def download_instagram_video(video_url, username, password):
             print(f"Téléchargement des vidéos du profil {profile_name}...")
             for post in profile.get_posts():
                 if post.is_video:
-                    target_folder = f"{profile_name}_videos"
-                    loader.download_post(post, target=target_folder)
+                    # Téléchargement de la vidéo
+                    loader.download_post(post, target=f"{profile_name}_videos")
+                    print(f"Vidéo téléchargée : {post.shortcode}")
 
-                    # Assurer que le fichier JSON est téléchargé
-                    json_file_path = os.path.join(target_folder, f"{post.shortcode}.json")
-                    if not os.path.exists(json_file_path):
-                        print(f"Fichier JSON {json_file_path} non trouvé. Assurez-vous que le téléchargement est complet.")
-                        continue
+                    # Renommer la vidéo après le téléchargement
+                    video_filename = f"{profile_name}_videos/{post.shortcode}.mp4"
+                    if os.path.exists(video_filename):
+                        # Lire le titre depuis le fichier de métadonnées
+                        metadata_filename = f"{profile_name}_videos/{post.shortcode}.txt"
+                        if os.path.exists(metadata_filename):
+                            with open(metadata_filename, 'r', encoding='utf-8') as metadata_file:
+                                title = metadata_file.read().strip()
+                            # Enlever les tags et utiliser le titre comme nom de fichier
+                            title = re.sub(r'#\S+', '', title).strip()
+                            new_video_filename = f"{profile_name}_videos/{title}.mp4"
+                            os.rename(video_filename, new_video_filename)
+                            print(f"Vidéo renommée en : {new_video_filename}")
+                        else:
+                            print("Le fichier de métadonnées n'a pas été trouvé pour le renommage.")
+                    else:
+                        print("Le fichier vidéo n'a pas été trouvé pour le renommage.")
 
-                    # Renommer les fichiers téléchargés
-                    downloaded_files = os.listdir(target_folder)
-                    for filename in downloaded_files:
-                        if filename.startswith(post.shortcode) and filename.endswith('.mp4'):
-                            old_file_path = os.path.join(target_folder, filename)
-                            
-                            # Chercher le fichier texte associé
-                            text_file_path = old_file_path.replace('.mp4', '.txt')
-                            if os.path.exists(text_file_path):
-                                video_title = extract_title_from_text_file(text_file_path)
-                            else:
-                                video_title = "video"
-                            
-                            new_filename = f"{video_title}.mp4"
-                            new_file_path = os.path.join(target_folder, new_filename)
-                            try:
-                                os.rename(old_file_path, new_file_path)
-                                print(f"Vidéo téléchargée et renommée : {new_filename}")
-                            except Exception as e:
-                                print(f"Erreur lors du renommage de {old_file_path} en {new_file_path}: {e}")
             print("Téléchargement terminé.")
         except instaloader.exceptions.InstaloaderException as e:
             print(f"Erreur lors du téléchargement : {e}")
