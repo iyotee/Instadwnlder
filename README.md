@@ -45,6 +45,7 @@ Ce script Python vous permet de télécharger des vidéos depuis Instagram en me
    Entrez votre nom utilisateur Instagram: votre_nom_utilisateur
    Entrez votre mot de passe Instagram: ********
    Entrez le lien de la vidéo Instagram: https://www.instagram.com/p/XXXXXXXXXX/
+
 ## Sécurité
 Vos informations d'identification Instagram sont chiffrées à l'aide de la bibliothèque cryptography avant d'être stockées localement. La clé de chiffrement est générée et stockée de manière sécurisée.
 Le script ne partage ni n'envoie vos informations d'identification ailleurs ; elles sont utilisées uniquement localement sur votre machine pour authentifier avec Instagram.
